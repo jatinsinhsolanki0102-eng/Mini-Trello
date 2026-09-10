@@ -67,16 +67,7 @@
   --radius: 12px;
   --radius-sm: 8px;
 
-  /* ------ live animated background (dark) ------ */
-  --bg-c1: #05010A;
-  --bg-c2: #3B0764;
-  --bg-c3: #7C3AED;
-  --bg-c4: #A855F7;
-  --bg-c5: #E9D5FF;
-  --bg-orb-1: rgba(168, 85, 247, 0.45);
-  --bg-orb-2: rgba(124, 58, 237, 0.38);
-  --bg-orb-3: rgba(233, 213, 255, 0.34);
-  --bg-orb-4: rgba(59, 7, 100, 0.26);
+  --bg-glow: radial-gradient(1100px 520px at 15% -12%, rgba(124, 58, 237, 0.16), transparent 62%);
 }
 
 /* ---------- Light theme overrides ---------- */
@@ -136,16 +127,7 @@
   --shadow-md: 0 6px 16px -4px rgba(35, 20, 60, 0.12);
   --shadow-lg: 0 24px 50px -12px rgba(35, 20, 60, 0.25);
 
-/* ------ live animated background (light) ------ */
-  --bg-c1: #F5EFFF;
-  --bg-c2: #DDD6FE;
-  --bg-c3: #C084FC;
-  --bg-c4: #D8B4FE;
-  --bg-c5: #F3E8FF;
-  --bg-orb-1: rgba(168, 85, 247, 0.28);
-  --bg-orb-2: rgba(124, 58, 237, 0.22);
-  --bg-orb-3: rgba(233, 213, 255, 0.28);
-  --bg-orb-4: rgba(59, 7, 100, 0.18);
+  --bg-glow: radial-gradient(1100px 520px at 15% -12%, rgba(124, 58, 237, 0.09), transparent 62%);
 }
 
 /* ============================================================
@@ -164,74 +146,13 @@ body {
 body {
   font-family: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
   background-color: var(--background);
-  background-image:
-    radial-gradient(1000px 560px at 15% -10%, var(--bg-orb-1), transparent 60%),
-    radial-gradient(900px 500px at 110% 15%, var(--bg-orb-2), transparent 62%),
-    radial-gradient(950px 520px at 45% 115%, var(--bg-orb-3), transparent 60%),
-    radial-gradient(700px 420px at 85% 55%, var(--bg-orb-4), transparent 55%);
-  background-size: 160% 160%, 150% 150%, 140% 140%, 130% 130%;
+  background-image: var(--bg-glow);
   background-repeat: no-repeat;
-  animation: orb-drift 30s ease-in-out infinite alternate;
   color: var(--text);
   line-height: 1.5;
   min-height: 100vh;
   overflow-x: hidden;
   transition: background-color 0.25s ease, color 0.25s ease;
-}
-
-/* Vivid colour layer — a rich 4-colour gradient that flows AND shifts hue,
-   so the background visibly changes colour over time */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image: linear-gradient(
-    115deg,
-    var(--bg-c1) 0%,
-    var(--bg-c2) 22%,
-    var(--bg-c3) 44%,
-    var(--bg-c4) 66%,
-    var(--bg-c5) 88%,
-    var(--bg-c1) 100%
-  );
-  background-size: 320% 320%;
-  animation: bg-flow 14s ease-in-out infinite, hue-drift 32s linear infinite;
-}
-
-@keyframes bg-flow {
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-/* Sweep the whole gradient through the colour wheel */
-@keyframes hue-drift {
-  0%,
-  100% {
-    filter: hue-rotate(0deg);
-  }
-  30% {
-    filter: hue-rotate(45deg);
-  }
-  60% {
-    filter: hue-rotate(-30deg);
-  }
-}
-
-/* Glow orbs drift around for extra depth */
-@keyframes orb-drift {
-  0% {
-    background-position: 0% 0%, 100% 0%, 50% 100%, 0% 50%;
-  }
-  100% {
-    background-position: 100% 60%, 0% 100%, 50% 0%, 100% 30%;
-  }
 }
 
 #root {
@@ -696,7 +617,7 @@ button {
 }
 
 .task-card--leaving {
-  animation: card-leave 0.26s ease forwards;
+  animation: card-leave 0.15s ease forwards;
   pointer-events: none;
 }
 
@@ -712,7 +633,7 @@ button {
 }
 
 .task-card--in {
-  animation: card-in 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: card-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes card-in {

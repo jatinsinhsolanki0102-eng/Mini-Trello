@@ -1,0 +1,99 @@
+============================================================
+  MINI-TRELLO — HOW TO RUN THE PROJECT
+  (Step-by-step instructions)
+============================================================
+
+PREREQUISITES (install once):
+  1. Install Python 3.9+  →  https://www.python.org/downloads/
+     IMPORTANT: During installation, tick the box
+     "Add Python to PATH"  (at the bottom of the installer).
+     Then restart your computer.
+
+  2. Install Node.js 18+  →  https://nodejs.org/
+     (Download the LTS version, run the installer, click Next
+     through all steps.)
+
+============================================================
+OPTION A: ONE-CLICK (EASIEST — WINDOWS ONLY)
+============================================================
+
+Step 1:  Extract the ZIP file to any folder on your computer.
+         (Right-click the ZIP → "Extract All..." → choose a
+         location like Desktop.)
+
+Step 2:  Inside the extracted folder, double-click the file
+         called  INSTALL.bat
+         (A black window will open and install everything.
+         Wait for it to finish and close.)
+
+Step 3:  Now double-click the file called  START.bat
+         (Two black terminal windows will open:
+           - One for the Backend (Flask)
+           - One for the Frontend (React)
+         After about 5 seconds your web browser will open
+         automatically to the app.)
+
+Step 4:  If the browser does not open automatically,
+         manually open this address in your browser:
+             http://localhost:5173
+
+============================================================
+OPTION B: MANUAL (TWO TERMINALS)
+============================================================
+
+Open two Command Prompt / Terminal windows:
+
+  TERMINAL 1 — Start the Backend:
+    > cd backend
+    > pip install -r requirements.txt
+    > python run.py
+
+  TERMINAL 2 — Start the Frontend:
+    > cd frontend
+    > npm install
+    > npm run dev
+
+  Then open  http://localhost:5173  in your browser.
+
+  IMPORTANT: Both servers must be running at the same time.
+  The frontend on port 5173 sends requests to the backend
+  on port 5000. If only one is running, the app will not work.
+
+============================================================
+TROUBLESHOOTING
+============================================================
+
+  "vite is not recognized" / frontend fails to start:
+    → Run INSTALL.bat first, or manually run:
+        cd frontend
+        npm install
+      Then try START.bat again.
+
+  "Python is not recognized" / backend fails:
+    → Make sure Python is installed and "Add Python to PATH"
+      was checked during installation. Restart your computer
+      if needed.
+
+  Browser opens but shows "Unable to connect":
+    → Make sure BOTH servers are running (two black windows
+      should be open). If one crashed, run START.bat again.
+
+  To STOP the application:
+    → Close both black terminal windows.
+
+============================================================
+WHAT THE APPLICATION DOES
+============================================================
+
+  - A Kanban board with three columns: To Do, In Progress, Done
+  - Create new tasks via the "Create New Task" button
+  - Move tasks forward/backward using Next / Previous buttons
+  - Drag and drop tasks between columns (grab and drop)
+  - Delete tasks with a confirmation dialog
+  - Switch between Light and Dark themes (top-right toggle)
+  - Background has an animated purple gradient
+  - All changes are saved to the database automatically
+
+============================================================
+  Mini-Trello | Student ID: 230390116025 | Sept 2026
+============================================================

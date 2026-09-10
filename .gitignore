@@ -1,0 +1,39 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+venv/
+.venv/
+env/
+ENV/
+
+# --- Environment variables ---
+.env
+backend/.env
+frontend/.env
+
+# --- Database files ---
+*.db
+backend/*.db
+backend/instance/
+
+# --- Node ---
+node_modules/
+frontend/node_modules/
+frontend/dist/
+dist/
+build/
+
+# --- IDE / OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- Misc ---
+*.log
+.pytest_cache/
+
+# --- Word temp files ---
+~$*.docx
+Mini-Trello-Report-OLD.docx

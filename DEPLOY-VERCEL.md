@@ -111,6 +111,12 @@ Vercel will:
 
 > First deploy takes 1–3 minutes. Later ones are much faster.
 
+**Turn OFF Vercel's "Deployment Protection"** (new accounts have it ON by
+default, which blocks anyone not logged into Vercel):
+
+1. Open https://vercel.com/your-team/mini-trello/settings/deployment
+2. Turn **OFF** the **"Require Vercel Authentication"** toggle → Save.
+
 ---
 
 ## Step 5 — Verify everything works

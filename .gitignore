@@ -40,3 +40,5 @@ Mini-Trello-Report-OLD.docx
 
 # --- Vercel ---
 .vercel/
+.vercel
+.env*

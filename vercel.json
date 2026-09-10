@@ -6,7 +6,6 @@
   "installCommand": "cd frontend && npm install",
   "functions": {
     "api/index.py": {
-      "runtime": "python3.12",
       "maxDuration": 30,
       "includeFiles": "backend/**"
     }

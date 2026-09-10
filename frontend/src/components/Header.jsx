@@ -1,6 +1,6 @@
 import ThemeToggle from './ThemeToggle.jsx'
 
-export default function Header({ theme, onThemeChange, onCreate }) {
+export default function Header({ theme, onThemeChange, onCreate, username, onLogout }) {
   return (
     <header className="header">
       <div className="header-inner">
@@ -17,6 +17,7 @@ export default function Header({ theme, onThemeChange, onCreate }) {
         </div>
 
         <div className="header-actions">
+          <span className="header-user">{username}</span>
           <ThemeToggle theme={theme} onChange={onThemeChange} />
           <button
             type="button"
@@ -27,6 +28,13 @@ export default function Header({ theme, onThemeChange, onCreate }) {
               +
             </span>
             Create New Task
+          </button>
+          <button
+            type="button"
+            className="btn btn-ghost btn-logout"
+            onClick={onLogout}
+          >
+            Logout
           </button>
         </div>
       </div>

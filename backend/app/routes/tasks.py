@@ -1,6 +1,7 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, g, jsonify, request
 
 from app.models import STATUSES, Task, db
+from app.security import require_auth
 
 tasks_bp = Blueprint("tasks", __name__)
 
@@ -21,14 +22,28 @@ def validate_status(value):
     return value in STATUSES
 
 
+def owned_task(task_id):
+    """Fetch a task only if it belongs to the current user."""
+    task = db.session.get(Task, task_id)
+    if task is None or task.user_id != g.current_user.id:
+        return None
+    return task
+
+
 @tasks_bp.get("/tasks")
+@require_auth
 def get_tasks():
-    """GET /api/tasks -> fetch all tasks from the database."""
-    tasks = Task.query.order_by(Task.created_at.desc(), Task.id.desc()).all()
+    """GET /api/tasks -> fetch the current user's tasks."""
+    tasks = (
+        Task.query.filter_by(user_id=g.current_user.id)
+        .order_by(Task.created_at.desc(), Task.id.desc())
+        .all()
+    )
     return jsonify({"tasks": [task.to_dict() for task in tasks]})
 
 
 @tasks_bp.post("/tasks")
+@require_auth
 def create_task():
     """POST /api/tasks -> create a task with status 'todo'."""
     data = request.get_json(silent=True)
@@ -43,7 +58,12 @@ def create_task():
     if not description:
         return error_response("Description is required", 400)
 
-    task = Task(title=title, description=description, status="todo")
+    task = Task(
+        title=title,
+        description=description,
+        status="todo",
+        user_id=g.current_user.id,
+    )
     db.session.add(task)
     db.session.commit()
 
@@ -51,9 +71,10 @@ def create_task():
 
 
 @tasks_bp.put("/tasks/<int:task_id>")
+@require_auth
 def update_task(task_id):
     """PUT /api/tasks/<id> -> update title, description and/or status."""
-    task = db.session.get(Task, task_id)
+    task = owned_task(task_id)
     if task is None:
         return error_response("Task not found", 404)
 
@@ -89,9 +110,10 @@ def update_task(task_id):
 
 
 @tasks_bp.delete("/tasks/<int:task_id>")
+@require_auth
 def delete_task(task_id):
     """DELETE /api/tasks/<id> -> permanently delete a task."""
-    task = db.session.get(Task, task_id)
+    task = owned_task(task_id)
     if task is None:
         return error_response("Task not found", 404)
 

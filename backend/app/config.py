@@ -32,6 +32,9 @@ class Config:
     TESTING = False
     DEBUG = os.environ.get("FLASK_DEBUG", "1") == "1"
 
+    # Used to sign login tokens. Override in production via SECRET_KEY env var.
+    SECRET_KEY = os.environ.get("SECRET_KEY", "mini-trello-dev-secret-change-me")
+
     DATABASE_URL = _normalize_database_url(_DEFAULT_DATABASE_URL)
     SQLALCHEMY_DATABASE_URI = DATABASE_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False

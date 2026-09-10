@@ -8,9 +8,36 @@
  */
 const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
+const TOKEN_KEY = 'mini-trello-token';
+
+export function getToken() {
+  try {
+    return localStorage.getItem(TOKEN_KEY);
+  } catch {
+    return null;
+  }
+}
+
+export function setToken(token) {
+  try {
+    if (token) {
+      localStorage.setItem(TOKEN_KEY, token);
+    } else {
+      localStorage.removeItem(TOKEN_KEY);
+    }
+  } catch {
+    /* storage unavailable — auth won't persist across reloads */
+  }
+}
+
+function authHeaders() {
+  const token = getToken();
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
 async function request(path, options = {}) {
   const response = await fetch(`${API_BASE}${path}`, {
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
     ...options,
   });
 
@@ -25,6 +52,9 @@ async function request(path, options = {}) {
   }
 
   if (!response.ok) {
+    if (response.status === 401 && getToken()) {
+      setToken(null);
+    }
     const message =
       (body && body.error) || `Request failed with status ${response.status}`;
     const error = new Error(message);
@@ -34,6 +64,24 @@ async function request(path, options = {}) {
   }
 
   return body;
+}
+
+export function register(username, password) {
+  return request('/auth/register', {
+    method: 'POST',
+    body: JSON.stringify({ username, password }),
+  });
+}
+
+export function login(username, password) {
+  return request('/auth/login', {
+    method: 'POST',
+    body: JSON.stringify({ username, password }),
+  });
+}
+
+export function me() {
+  return request('/auth/me');
 }
 
 export function getTasks() {

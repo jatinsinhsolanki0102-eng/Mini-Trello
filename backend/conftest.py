@@ -35,3 +35,20 @@ def app(tmp_path):
 @pytest.fixture()
 def client(app):
     return app.test_client()
+
+
+@pytest.fixture()
+def token(client):
+    """Register a fresh account and return its auth token."""
+    response = client.post(
+        "/api/auth/register",
+        json={"username": "alice", "password": "secret123"},
+    )
+    assert response.status_code == 201
+    return response.get_json()["token"]
+
+
+@pytest.fixture()
+def auth(token):
+    """Authorization header for an authenticated test user."""
+    return {"Authorization": f"Bearer {token}"}

@@ -2,7 +2,18 @@ import { useCallback, useEffect, useState } from 'react'
 import Header from './components/Header.jsx'
 import Board from './components/Board.jsx'
 import TaskModal from './components/TaskModal.jsx'
-import { getTasks, createTask, updateTask, deleteTask } from './services/api.js'
+import Login from './components/Login.jsx'
+import {
+  getTasks,
+  createTask,
+  updateTask,
+  deleteTask,
+  login,
+  register,
+  me,
+  getToken,
+  setToken,
+} from './services/api.js'
 
 const THEME_STORAGE_KEY = 'mini-trello-theme'
 
@@ -22,6 +33,8 @@ export default function App() {
   const [modalOpen, setModalOpen] = useState(false)
   const [theme, setTheme] = useState(readStoredTheme)
   const [incomingId, setIncomingId] = useState(null)
+  const [user, setUser] = useState(null)
+  const [checkingSession, setCheckingSession] = useState(true)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -32,8 +45,50 @@ export default function App() {
     }
   }, [theme])
 
+  useEffect(() => {
+    let active = true
+    async function restoreSession() {
+      if (!getToken()) {
+        setCheckingSession(false)
+        return
+      }
+      try {
+        const data = await me()
+        if (active) setUser(data.user)
+      } catch {
+        setToken(null)
+      } finally {
+        if (active) setCheckingSession(false)
+      }
+    }
+    restoreSession()
+    return () => {
+      active = false
+    }
+  }, [])
+
   const handleThemeChange = (nextTheme) => {
     setTheme(nextTheme)
+  }
+
+  const handleAuth = async (mode, username, password, done) => {
+    try {
+      const data =
+        mode === 'register'
+          ? await register(username, password)
+          : await login(username, password)
+      setToken(data.token)
+      setUser(data.user)
+      done(null)
+    } catch (err) {
+      done(err.message)
+    }
+  }
+
+  const handleLogout = () => {
+    setToken(null)
+    setUser(null)
+    setTasks([])
   }
 
   const loadTasks = useCallback(async () => {
@@ -50,8 +105,8 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    loadTasks()
-  }, [loadTasks])
+    if (user) loadTasks()
+  }, [user, loadTasks])
 
   const handleCreateTask = async ({ title, description }) => {
     try {
@@ -90,12 +145,35 @@ export default function App() {
     }
   }
 
+  if (checkingSession) {
+    return (
+      <div className="app-main auth-loading">
+        <div className="board-loading" role="status">
+          <span className="spinner" aria-hidden="true" />
+          Loading...
+        </div>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return (
+      <Login
+        theme={theme}
+        onThemeChange={handleThemeChange}
+        onAuth={handleAuth}
+      />
+    )
+  }
+
   return (
     <div className="app">
       <Header
         theme={theme}
         onThemeChange={handleThemeChange}
         onCreate={() => setModalOpen(true)}
+        username={user.username}
+        onLogout={handleLogout}
       />
       <main className="app-main">
         {error && (

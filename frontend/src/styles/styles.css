@@ -946,6 +946,115 @@ button {
 }
 
 /* ============================================================
+   Auth (login / register)
+   ============================================================ */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+}
+
+.auth-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.auth-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+  padding: 32px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.auth-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.auth-subtitle {
+  margin: 2px 0 0;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-error {
+  margin-bottom: 16px;
+}
+
+.btn-auth-submit {
+  margin-top: 4px;
+  width: 100%;
+  justify-content: center;
+  padding: 11px 18px;
+  font-size: 0.95rem;
+}
+
+.auth-footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--primary);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.link-button:hover {
+  text-decoration: underline;
+}
+
+.auth-theme-toggle {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+}
+
+.header-user {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--primary-soft);
+  border: 1px solid var(--primary-ring);
+  border-radius: 999px;
+  padding: 4px 14px;
+  white-space: nowrap;
+}
+
+.btn-logout {
+  border-color: var(--border);
+}
+
+/* ============================================================
    Responsive
    ============================================================ */
 @media (max-width: 960px) {

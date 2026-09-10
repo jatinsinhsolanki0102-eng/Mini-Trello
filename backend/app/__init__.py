@@ -3,6 +3,7 @@ from flask_cors import CORS
 
 from app.config import Config
 from app.models import db
+from app.routes.auth import auth_bp
 from app.routes.tasks import tasks_bp
 
 
@@ -15,13 +16,24 @@ def create_app(config_object=Config):
 
     db.init_app(app)
     app.register_blueprint(tasks_bp, url_prefix="/api")
+    app.register_blueprint(auth_bp, url_prefix="/api/auth")
 
     with app.app_context():
         db.create_all()
 
     @app.get("/")
     def home():
-        return jsonify({"message": "Mini-Trello API", "endpoints": ["/api/tasks"]})
+        return jsonify(
+            {
+                "message": "Mini-Trello API",
+                "endpoints": [
+                    "/api/auth/register",
+                    "/api/auth/login",
+                    "/api/auth/me",
+                    "/api/tasks",
+                ],
+            }
+        )
 
     @app.errorhandler(404)
     def not_found(error):

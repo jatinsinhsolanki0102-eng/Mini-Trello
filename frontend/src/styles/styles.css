@@ -67,7 +67,7 @@
   --radius: 12px;
   --radius-sm: 8px;
 
-  --bg-glow: radial-gradient(1100px 520px at 15% -12%, rgba(124, 58, 237, 0.16), transparent 62%);
+  --bg-image: url('https://images.unsplash.com/photo-1771814536243-788555d3925b?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
 }
 
 /* ---------- Light theme overrides ---------- */
@@ -127,7 +127,7 @@
   --shadow-md: 0 6px 16px -4px rgba(35, 20, 60, 0.12);
   --shadow-lg: 0 24px 50px -12px rgba(35, 20, 60, 0.25);
 
-  --bg-glow: radial-gradient(1100px 520px at 15% -12%, rgba(124, 58, 237, 0.09), transparent 62%);
+  --bg-image: url('https://png.pngtree.com/background/20250105/original/pngtree-abstract-texture-shades-of-purple-and-white-picture-image_13626806.jpg');
 }
 
 /* ============================================================
@@ -146,8 +146,11 @@ body {
 body {
   font-family: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
   background-color: var(--background);
-  background-image: var(--bg-glow);
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
   color: var(--text);
   line-height: 1.5;
   min-height: 100vh;
@@ -481,23 +484,49 @@ button {
   display: flex;
   flex-direction: column;
   min-height: 300px;
-  border: 1px solid var(--border);
-  transition: background-color 0.25s ease, border-color 0.25s ease;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .column-todo {
-  background: var(--col-todo-bg);
-  border-color: var(--col-todo-border);
+  background: rgba(124, 58, 237, 0.16);
+  border-color: rgba(196, 181, 253, 0.35);
 }
 
 .column-in_progress {
-  background: var(--col-inprogress-bg);
-  border-color: var(--col-inprogress-border);
+  background: rgba(99, 102, 241, 0.16);
+  border-color: rgba(165, 180, 252, 0.35);
 }
 
 .column-done {
-  background: var(--col-done-bg);
-  border-color: var(--col-done-border);
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(110, 231, 183, 0.35);
+}
+
+/* ---- frosted-glass columns for the light theme ---- */
+:root[data-theme="light"] .column {
+  background: rgba(255, 255, 255, 0.55);
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 8px 28px rgba(31, 21, 55, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+:root[data-theme="light"] .column-todo {
+  background: rgba(237, 233, 254, 0.55);
+  border-color: rgba(196, 181, 253, 0.6);
+}
+
+:root[data-theme="light"] .column-in_progress {
+  background: rgba(226, 232, 250, 0.55);
+  border-color: rgba(165, 180, 252, 0.6);
+}
+
+:root[data-theme="light"] .column-done {
+  background: rgba(240, 253, 244, 0.55);
+  border-color: rgba(134, 239, 172, 0.6);
 }
 
 .column-header {
@@ -633,7 +662,7 @@ button {
 }
 
 .task-card--in {
-  animation: card-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: card-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes card-in {

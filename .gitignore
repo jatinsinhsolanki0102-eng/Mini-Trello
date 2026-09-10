@@ -37,3 +37,6 @@ Thumbs.db
 # --- Word temp files ---
 ~$*.docx
 Mini-Trello-Report-OLD.docx
+
+# --- Vercel ---
+.vercel/

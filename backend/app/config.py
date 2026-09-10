@@ -11,6 +11,15 @@ _DEFAULT_DATABASE_URL = os.environ.get(
     "sqlite:///" + os.path.join(BASE_DIR, "mini_trello.db"),
 )
 
+# Normalise a bare Postgres URL (e.g. Neon's "postgresql://..." or
+# "postgres://...") to a form SQLAlchemy can use with psycopg2.
+def _normalize_database_url(url):
+    if url.startswith("postgres://"):
+        return "postgresql+psycopg2://" + url[len("postgres://"):]
+    if url.startswith("postgresql://"):
+        return "postgresql+psycopg2://" + url[len("postgresql://"):]
+    return url
+
 _DEFAULT_CORS_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174"
 
 
@@ -20,7 +29,7 @@ class Config:
     TESTING = False
     DEBUG = os.environ.get("FLASK_DEBUG", "1") == "1"
 
-    DATABASE_URL = _DEFAULT_DATABASE_URL
+    DATABASE_URL = _normalize_database_url(_DEFAULT_DATABASE_URL)
     SQLALCHEMY_DATABASE_URI = DATABASE_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 

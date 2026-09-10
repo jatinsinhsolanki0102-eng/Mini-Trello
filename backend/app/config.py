@@ -11,13 +11,16 @@ _DEFAULT_DATABASE_URL = os.environ.get(
     "sqlite:///" + os.path.join(BASE_DIR, "mini_trello.db"),
 )
 
-# Normalise a bare Postgres URL (e.g. Neon's "postgresql://..." or
-# "postgres://...") to a form SQLAlchemy can use with psycopg2.
+# Normalise a bare Postgres URL (e.g. Supabase/Neon) to a form SQLAlchemy
+# can use with psycopg2. Also drops Supabase's "pgbouncer=true" marker,
+# which is only meant for their connection pooler and confuses the driver.
 def _normalize_database_url(url):
     if url.startswith("postgres://"):
-        return "postgresql+psycopg2://" + url[len("postgres://"):]
-    if url.startswith("postgresql://"):
-        return "postgresql+psycopg2://" + url[len("postgresql://"):]
+        url = "postgresql+psycopg2://" + url[len("postgres://"):]
+    elif url.startswith("postgresql://"):
+        url = "postgresql+psycopg2://" + url[len("postgresql://"):]
+    if "pgbouncer" in url:
+        url = url.replace("?pgbouncer=true", "").replace("&pgbouncer=true", "")
     return url
 
 _DEFAULT_CORS_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174"

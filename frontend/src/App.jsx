@@ -64,15 +64,19 @@ export default function App() {
   }
 
   const handleMoveTask = async (taskId, nextStatus) => {
+    const previous = tasks
+    setTasks((prev) =>
+      prev.map((t) => (t.id === taskId ? { ...t, status: nextStatus } : t))
+    )
+    setIncomingId(taskId)
     try {
-      const updated = await updateTask(taskId, { status: nextStatus })
-      setTasks((prev) => prev.map((t) => (t.id === updated.id ? updated : t)))
-      setIncomingId(updated.id)
-      return true
+      await updateTask(taskId, { status: nextStatus })
     } catch (err) {
+      setTasks(previous)
       alert(`Failed to update task: ${err.message}`)
       return false
     }
+    return true
   }
 
   const handleDeleteTask = async (id) => {

@@ -53,7 +53,7 @@ export default function TaskCard({ task, onMove, onDelete, incoming }) {
     setLeaving(true)
     moveTimer.current = setTimeout(() => {
       onMove(task.id, nextStatus)
-    }, 50)
+    }, 0)
   }
 
   const handleDragStart = (e) => {

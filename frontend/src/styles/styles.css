@@ -646,7 +646,7 @@ button {
 }
 
 .task-card--leaving {
-  animation: card-leave 0.15s ease forwards;
+  animation: card-leave 0.2s ease forwards;
   pointer-events: none;
 }
 
@@ -662,7 +662,7 @@ button {
 }
 
 .task-card--in {
-  animation: card-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: card-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes card-in {
